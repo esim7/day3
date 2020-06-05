@@ -1,0 +1,20 @@
+﻿@model WebApplication3.ViewModels.StudentCoursesViewModel
+
+<h4>Enrollment page</h4>
+
+
+<form action="@Url.Action("Enroll")" method="post">
+    @Html.DropDownListFor(a => Model.StudentId, new SelectList(ViewBag.Students, "Id", "Name"))
+    @Html.DropDownListFor(a => Model.CourseId, new SelectList(ViewBag.Courses, "Id", "Title"))
+
+    <input type="submit" name="Submit" value="Submit" />
+</form>
+
+<!--
+    
+Model - модель
+DTO - Data Transfer Object (Repository)
+
+ViewModel - модель представления
+
+-->
