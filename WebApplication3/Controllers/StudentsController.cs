@@ -164,7 +164,6 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public ActionResult UnEnroll(StudentCoursesViewModel model)
         {
-            int i = 0;
             var student = db.Students.Include(s => s.Courses).FirstOrDefault(s => s.Id == model.StudentId);
             var course = db.Courses.Find(model.CourseId);
             if (student != null)
