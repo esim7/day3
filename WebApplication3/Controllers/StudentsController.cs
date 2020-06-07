@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -149,7 +150,34 @@ namespace WebApplication3.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Details", new { id = student.Id });
             }
+            return View();
+        }
 
+        public ActionResult UnEnroll()
+        {
+            var model = new StudentCoursesViewModel();
+            ViewBag.Students = db.Students.ToList();
+            ViewBag.Courses = db.Courses.ToList();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UnEnroll(StudentCoursesViewModel model)
+        {
+            int i = 0;
+            var student = db.Students.Include(s => s.Courses).FirstOrDefault(s => s.Id == model.StudentId);
+            var course = db.Courses.Find(model.CourseId);
+            if (student != null)
+            {
+                if (!student.Courses.Contains(course))
+                {
+                    return RedirectToAction("Index");
+                }
+                student.Courses.Remove(course);
+                db.SaveChanges();
+                return RedirectToAction("Details", new { id = student.Id });
+
+            }
             return View();
         }
     }
